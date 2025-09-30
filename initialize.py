@@ -200,7 +200,6 @@ def recursive_file_check(path, docs_all):
         # パスがファイルの場合、ファイル読み込み
         file_load(path, docs_all)
 
-
 def file_load(path, docs_all):
     """
     ファイル内のデータ読み込み

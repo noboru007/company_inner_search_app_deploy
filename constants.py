@@ -50,7 +50,8 @@ RAG_TOP_FOLDER_PATH = "./data"
 SUPPORTED_EXTENSIONS = {
     ".pdf": PyMuPDFLoader,
     ".docx": Docx2txtLoader,
-    ".csv": lambda path: CSVLoader(path, encoding="utf-8")
+    ".csv": lambda path: CSVLoader(path, encoding="utf-8"),
+    ".txt": lambda path: TextLoader(path, encoding="utf-8") # 提出課題【問題5】テキストファイルの読み込みを追加
 }
 WEB_URL_LOAD_TARGETS = [
     "https://generative-ai.web-camp.io/"
@@ -61,8 +62,10 @@ WEB_URL_LOAD_TARGETS = [
 #　### 提出課題 【問題1】と【問題2】のパラメータ ####
 # RAG参照用のパラメータ
 # ==========================================
-CHUNK_SIZE = 500
-CHUNK_OVERLAP = 50
+# CHUNK_SIZE = 500
+# CHUNK_OVERLAP = 50
+CHUNK_SIZE = 1000 # 通常のドキュメント用（元の設定）
+CHUNK_OVERLAP = 100
 # ベクターストアから取り出すドキュメントの数
 RETRIEVER_TOP_K = 5
 
