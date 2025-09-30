@@ -10,7 +10,7 @@ import os
 if not os.environ.get('USER_AGENT'):
     os.environ['USER_AGENT'] = 'CompanyInnerSearchApp/1.0'
 # 「.env」ファイルから環境変数を読み込むための関数
-# from dotenv import load_dotenv
+from dotenv import load_dotenv
 # ログ出力を行うためのモジュール
 import logging
 # streamlitアプリの表示を担当するモジュール
