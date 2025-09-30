@@ -12,7 +12,7 @@ if not os.environ.get('USER_AGENT'):
 # 「.env」ファイルから環境変数を読み込むための関数
 from dotenv import load_dotenv
 # ログ出力を行うためのモジュール
-import logging
+# import logging
 # streamlitアプリの表示を担当するモジュール
 import streamlit as st
 # （自作）画面表示以外の様々な関数が定義されているモジュール
