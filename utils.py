@@ -6,7 +6,7 @@
 # ライブラリの読み込み
 ############################################################
 import os
-# from dotenv import load_dotenv
+from dotenv import load_dotenv
 import streamlit as st
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain.schema import HumanMessage
@@ -20,7 +20,7 @@ import constants as ct
 # 設定関連
 ############################################################
 # 「.env」ファイルで定義した環境変数の読み込み
-# load_dotenv()
+load_dotenv()
 
 
 ############################################################
