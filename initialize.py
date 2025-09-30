@@ -121,7 +121,39 @@ def initialize_retriever():
     # 埋め込みモデルの用意
     embeddings = OpenAIEmbeddings()
     
-    # チャンク分割用のオブジェクトを作成
+    csv_docs = []
+    other_docs = []
+    csv_doc_contents = []
+    csv_doc_metadata = None
+
+    # 提出課題【問題6】CSVデータを一つのドキュメントに統合する
+    for doc in docs_all:
+        if str(doc.metadata.get("source", ""))[-4:] == ".csv":
+            csv_doc_contents.append("[" + doc.page_content + "]")
+            # 最初のCSVドキュメントのメタデータを使う（必要に応じて調整）
+            if csv_doc_metadata is None:
+                csv_doc_metadata = doc.metadata
+        else:
+            other_docs.append(doc)
+
+    print(csv_doc_contents)
+
+    # CSVファイルが存在する場合のみ統合処理を実行
+    if csv_doc_contents:
+        from langchain_core.documents import Document
+        # 複数のCSVドキュメントを1つにまとめる
+        merged_csv_content = "\n".join(csv_doc_contents)
+        merged_csv_doc = Document(page_content=merged_csv_content, metadata=csv_doc_metadata or {})
+        csv_docs = [merged_csv_doc]
+
+    # CSVファイル専用のチャンク分割用オブジェクトを作成(回答精度向上のため、サイズを大きめに設定)
+    csv_text_splitter = CharacterTextSplitter(
+        chunk_size=ct.CSV_CHUNK_SIZE,
+        chunk_overlap=ct.CSV_CHUNK_OVERLAP,
+        separator="\n"
+    )
+    
+    # その他のファイル用のチャンク分割用オブジェクトを作成
     # 提出課題【問題2】チャンク分割用のオブジェクトを作成（チャンクサイズとチャンクオーバーラップを設定）
     text_splitter = CharacterTextSplitter(
         chunk_size=ct.CHUNK_SIZE,
@@ -129,8 +161,14 @@ def initialize_retriever():
         separator="\n"
     )
 
-    # チャンク分割を実施
-    splitted_docs = text_splitter.split_documents(docs_all)
+    # CSVファイルのチャンク分割を実施
+    splitted_csv_docs = csv_text_splitter.split_documents(csv_docs)
+    
+    # その他のファイルのチャンク分割を実施
+    splitted_other_docs = text_splitter.split_documents(other_docs)
+    
+    # すべてのチャンクを統合
+    splitted_docs = splitted_csv_docs + splitted_other_docs
 
     # ベクターストアの作成
     db = Chroma.from_documents(splitted_docs, embedding=embeddings)
@@ -173,7 +211,10 @@ def load_data_sources():
         # for文の外のリストに読み込んだデータソースを追加
         web_docs_all.extend(web_docs)
     # 通常読み込みのデータソースにWebページのデータを追加
-    docs_all.extend(web_docs_all)
+    ############################################
+    # なぜ社外の関係ないソースを読み込む？とりあえずコメントアウトしておく
+    # docs_all.extend(web_docs_all)
+    ############################################
 
     return docs_all
 

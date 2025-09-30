@@ -207,7 +207,7 @@ def display_search_llm_response(llm_response):
         icon = utils.get_source_icon(main_file_path)
         # ページ番号が取得できた場合のみ、ページ番号を表示（ドキュメントによっては取得できない場合がある）
         if "page" in llm_response["context"][0].metadata:
-            # ページ番号を取得（0ベースから1ベースに変換）
+            # ページ番号を取得（0ベースから1ベースに変換） 提出課題【問題4】ページ番号を表示
             main_page_number = llm_response["context"][0].metadata["page"] + 1
             # 「メインドキュメントのファイルパス」と「ページ番号」を表示
             st.success(f"{main_file_path} (ページNo.{main_page_number})", icon=icon) # 提出課題【問題4】ページ番号を表示
@@ -240,13 +240,10 @@ def display_search_llm_response(llm_response):
             # 重複チェック用のリストにファイルパスを順次追加
             duplicate_check_list.append(sub_file_path)
             
-            """
-            必須課題【問題4】ページ番号の取得
-            """
             # ページ番号が取得できない場合のための分岐処理
             if "page" in document.metadata:
-                # ページ番号を取得（0ベースから1ベースに変換）
-                sub_page_number = document.metadata["page"] + 1
+                # ページ番号を取得（0ベースから1ベースに変換）提出課題【問題4】ページ番号を表示
+                sub_page_number = document.metadata["page"] + 1 # 提出課題【問題4】ページ番号を表示
                 # 「サブドキュメントのファイルパス」と「ページ番号」の辞書を作成
                 sub_choice = {"source": sub_file_path, "page_number": sub_page_number}
             else:
@@ -346,8 +343,8 @@ def display_contact_llm_response(llm_response):
 
             # ページ番号が取得できた場合のみ、ページ番号を表示（ドキュメントによっては取得できない場合がある）
             if "page" in document.metadata:
-                # ページ番号を取得（0ベースから1ベースに変換）
-                page_number = document.metadata["page"] + 1
+                # ページ番号を取得（0ベースから1ベースに変換） 提出課題【問題4】ページ番号を表示
+                page_number = document.metadata["page"] + 1  # 提出課題【問題4】ページ番号を表示
                 # 「ファイルパス」と「ページ番号」
                 file_info = f"{file_path} (ページNo.{page_number})" # 提出課題【問題4】ページ番号を表示
             else:

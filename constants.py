@@ -9,6 +9,7 @@ from langchain_community.document_loaders import PyMuPDFLoader, Docx2txtLoader, 
 from langchain_community.document_loaders.csv_loader import CSVLoader
 
 
+
 ############################################################
 # 共通変数の定義
 ############################################################
@@ -50,7 +51,7 @@ RAG_TOP_FOLDER_PATH = "./data"
 SUPPORTED_EXTENSIONS = {
     ".pdf": PyMuPDFLoader,
     ".docx": Docx2txtLoader,
-    ".csv": lambda path: CSVLoader(path, encoding="utf-8"),
+    ".csv": lambda path: CSVLoader(path, encoding="utf-8"),  # 従来のCSVLoaderを使用
     ".txt": lambda path: TextLoader(path, encoding="utf-8") # 提出課題【問題5】テキストファイルの読み込みを追加
 }
 WEB_URL_LOAD_TARGETS = [
@@ -59,15 +60,18 @@ WEB_URL_LOAD_TARGETS = [
 
 
 # ==========================================
-#　### 提出課題 【問題1】と【問題2】のパラメータ ####
 # RAG参照用のパラメータ
 # ==========================================
-# CHUNK_SIZE = 500
-# CHUNK_OVERLAP = 50
-CHUNK_SIZE = 1000 # 通常のドキュメント用（元の設定）
-CHUNK_OVERLAP = 100
-# ベクターストアから取り出すドキュメントの数
+# 提出課題 【問題1】ベクターストアから取り出すドキュメントの数
 RETRIEVER_TOP_K = 5
+# 提出課題 【問題2】チャンク分割用のオブジェクトを作成（チャンクサイズとチャンクオーバーラップを設定）
+CHUNK_SIZE = 500
+CHUNK_OVERLAP = 50
+
+# 提出課題 【問題6】CSVファイル専用のチャンクサイズ
+CSV_CHUNK_SIZE = 5000  # CSVファイル用に大きなチャンクサイズを設定
+CSV_CHUNK_OVERLAP = 500  # CSVファイル用のオーバーラップ
+
 
 
 # ==========================================
