@@ -130,6 +130,7 @@ def initialize_retriever():
     for doc in docs_all:
         if str(doc.metadata.get("source", ""))[-4:] == ".csv":
             csv_doc_contents.append("[" + doc.page_content + "]")
+            print("CSVデータ：" + doc.page_content)
             # 最初のCSVドキュメントのメタデータを使う（必要に応じて調整）
             if csv_doc_metadata is None:
                 csv_doc_metadata = doc.metadata
@@ -148,7 +149,7 @@ def initialize_retriever():
     csv_text_splitter = CharacterTextSplitter(
         chunk_size=ct.CSV_CHUNK_SIZE,
         chunk_overlap=ct.CSV_CHUNK_OVERLAP,
-        separator="\n"
+        separator=","
     )
     
     # その他のファイル用のチャンク分割用オブジェクトを作成
@@ -161,6 +162,7 @@ def initialize_retriever():
 
     # CSVファイルのチャンク分割を実施
     splitted_csv_docs = csv_text_splitter.split_documents(csv_docs)
+    print("CSVチャンク分割後：" + str(splitted_csv_docs))
     
     # その他のファイルのチャンク分割を実施
     splitted_other_docs = text_splitter.split_documents(other_docs)
