@@ -136,8 +136,6 @@ def initialize_retriever():
         else:
             other_docs.append(doc)
 
-    print(csv_doc_contents)
-
     # CSVファイルが存在する場合のみ統合処理を実行
     if csv_doc_contents:
         from langchain_core.documents import Document
