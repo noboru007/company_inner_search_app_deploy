@@ -21,6 +21,67 @@ def display_app_title():
     st.markdown(f"## {ct.APP_NAME}")
 
 
+def display_sidebar():
+    """
+    必須課題【問題3】
+    サイドバーの表示（利用目的選択と入力例）
+    """
+    with st.sidebar:
+        # 利用目的選択
+        st.markdown("### 🎯 利用目的")
+        st.session_state.mode = st.radio(
+            label="利用目的を選択してください",
+            options=[ct.ANSWER_MODE_1, ct.ANSWER_MODE_2],
+            index=0 if not hasattr(st.session_state, 'mode') else (0 if st.session_state.mode == ct.ANSWER_MODE_1 else 1),
+            label_visibility="collapsed"
+        )
+
+        st.divider()
+
+        # 「社内文書検索」の機能説明
+        st.markdown("**🔍【「社内文書検索」を選択した場合】**")
+        st.info("入力内容と関連性が高い社内文書のありかを検索できます。")
+
+        st.container()
+        with st.container():
+            st.markdown(
+                """
+                <div style="background-color: #fff; padding: 8px 12px; border-radius: 6px;">
+                    <span style="font-weight: bold;">【入力例】</span><br>
+                    社員の育成方針に関するMTGの議事録
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+        # Streamlitの標準機能で余白を表示
+        st.write("")  # 1行分の余白
+        
+        # 「社内問い合わせ」の機能説明
+        st.markdown("**💬【「社内問い合わせ」を選択した場合】**")
+        st.info("質問・要望に対して、社内文書の情報をもとに回答を得られます。")
+
+        with st.container():
+            st.markdown(
+                """
+                <div style="background-color: #fff; padding: 8px 12px; border-radius: 6px;">
+                    <span style="font-weight: bold;">【入力例】</span><br>
+                    人事部に所属している従業員情報を一覧化して
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+
+        st.divider()
+        
+        # アプリの説明
+        st.markdown("### ℹ️ アプリについて")
+        st.markdown("社内文書の情報をもとに回答する生成AIチャットボットです。")
+        
+        # 現在のモード表示
+        st.markdown("---")
+        st.markdown(f"**現在のモード：** {st.session_state.mode}")
+        
 def display_select_mode():
     """
     回答モードのラジオボタンを表示
@@ -30,7 +91,7 @@ def display_select_mode():
     with col1:
         # 「label_visibility="collapsed"」とすることで、ラジオボタンを非表示にする
         st.session_state.mode = st.radio(
-            label="",
+            label="回答モード選択",
             options=[ct.ANSWER_MODE_1, ct.ANSWER_MODE_2],
             label_visibility="collapsed"
         )
@@ -41,21 +102,10 @@ def display_initial_ai_message():
     AIメッセージの初期表示
     """
     with st.chat_message("assistant"):
-        # 「st.success()」とすると緑枠で表示される
-        st.markdown("こんにちは。私は社内文書の情報をもとに回答する生成AIチャットボットです。上記で利用目的を選択し、画面下部のチャット欄からメッセージを送信してください。")
-
-        # 「社内文書検索」の機能説明
-        st.markdown("**【「社内文書検索」を選択した場合】**")
-        # 「st.info()」を使うと青枠で表示される
-        st.info("入力内容と関連性が高い社内文書のありかを検索できます。")
-        # 「st.code()」を使うとコードブロックの装飾で表示される
-        # 「wrap_lines=True」で折り返し設定、「language=None」で非装飾とする
-        st.code("【入力例】\n社員の育成方針に関するMTGの議事録", wrap_lines=True, language=None)
-
-        # 「社内問い合わせ」の機能説明
-        st.markdown("**【「社内問い合わせ」を選択した場合】**")
-        st.info("質問・要望に対して、社内文書の情報をもとに回答を得られます。")
-        st.code("【入力例】\n人事部に所属している従業員情報を一覧化して", wrap_lines=True, language=None)
+        st.success("こんにちは。私は社内文書の情報をもとに回答する生成AIチャットボットです。サイドバーで利用目的を選択し、画面下部のチャット欄からメッセージを送信してください。")
+        
+        # 黄色の警告メッセージ
+        st.warning("具体的に入力したほうが期待通りの回答を得やすいです。")
 
 
 def display_conversation_log():
