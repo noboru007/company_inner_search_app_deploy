@@ -6,7 +6,7 @@
 # ライブラリの読み込み
 ############################################################
 import os
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 import streamlit as st
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain.schema import HumanMessage
